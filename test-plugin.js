@@ -1,36 +1,46 @@
-(function() {
-    function addTestButton() {
-        let btn = document.createElement('div');
-        btn.innerText = '🐞 TEST';
-        btn.style.position = 'fixed';
-        btn.style.top = '10px';
-        btn.style.right = '10px';
-        btn.style.zIndex = 9999;
-        btn.style.backgroundColor = 'red';
-        btn.style.color = 'white';
-        btn.style.padding = '8px 12px';
-        btn.style.borderRadius = '20px';
-        btn.style.fontSize = '14px';
-        btn.style.cursor = 'pointer';
+(function () {
 
-        let clickCount = 0;
-        btn.onclick = function() {
-            clickCount++;
-            btn.innerText = '🐞 ' + clickCount;
-            btn.style.backgroundColor = 'green';
-            setTimeout(() => btn.style.backgroundColor = 'red', 300);
+    Lampa.Plugins.add({
+        id: 'test_plugin',
+        title: 'Test Plugin',
+        version: '1.0.0',
 
-            // Спроба показати системне повідомлення Lampa
-            try {
-                if (typeof Lampa !== 'undefined' && Lampa.Notification && Lampa.Notification.show) {
-                    Lampa.Notification.show('Плагін працює! Кліків: ' + clickCount);
-                } else {
-                    console.log('Lampa.Notification не знайдено');
-                }
-            } catch(e) {}
-        };
-        document.body.appendChild(btn);
-    }
-    if (document.body) addTestButton();
-    else window.addEventListener('load', addTestButton);
+        init: function () {
+            console.log('Test Plugin init');
+        },
+
+        start: function () {
+            this.addButton();
+        },
+
+        addButton: function () {
+
+            if (document.getElementById('lampa_test_btn')) return;
+
+            var btn = document.createElement('div');
+            btn.id = 'lampa_test_btn';
+
+            btn.innerText = '🐞 TEST';
+
+            btn.style.position = 'fixed';
+            btn.style.top = '10px';
+            btn.style.right = '10px';
+            btn.style.zIndex = 999999;
+
+            btn.style.background = 'red';
+            btn.style.color = 'white';
+            btn.style.padding = '8px 12px';
+            btn.style.borderRadius = '20px';
+            btn.style.fontSize = '14px';
+            btn.style.cursor = 'pointer';
+
+            btn.onclick = function () {
+                Lampa.Noty && Lampa.Noty.show('Plugin works 🔥');
+                console.log('Plugin works');
+            };
+
+            document.body.appendChild(btn);
+        }
+    });
+
 })();
