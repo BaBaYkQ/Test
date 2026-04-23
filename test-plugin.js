@@ -1,7 +1,6 @@
 (function() {
-    // Спроба додати кнопку в правий верхній кут
     function addTestButton() {
-        var btn = document.createElement('div');
+        let btn = document.createElement('div');
         btn.innerText = '🐞 TEST';
         btn.style.position = 'fixed';
         btn.style.top = '10px';
@@ -13,16 +12,25 @@
         btn.style.borderRadius = '20px';
         btn.style.fontSize = '14px';
         btn.style.cursor = 'pointer';
+
+        let clickCount = 0;
         btn.onclick = function() {
-            alert('Plugin works!');
+            clickCount++;
+            btn.innerText = '🐞 ' + clickCount;
+            btn.style.backgroundColor = 'green';
+            setTimeout(() => btn.style.backgroundColor = 'red', 300);
+
+            // Спроба показати системне повідомлення Lampa
+            try {
+                if (typeof Lampa !== 'undefined' && Lampa.Notification && Lampa.Notification.show) {
+                    Lampa.Notification.show('Плагін працює! Кліків: ' + clickCount);
+                } else {
+                    console.log('Lampa.Notification не знайдено');
+                }
+            } catch(e) {}
         };
         document.body.appendChild(btn);
-        console.log('Test button added');
     }
-
-    if (document.body) {
-        addTestButton();
-    } else {
-        window.addEventListener('load', addTestButton);
-    }
+    if (document.body) addTestButton();
+    else window.addEventListener('load', addTestButton);
 })();
